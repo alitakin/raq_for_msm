@@ -4,3 +4,5 @@ faiss-cpu
 transformers
 langchain==0.0.330
 streamlit
+s3fs==2024.3.1
+st-files-connection

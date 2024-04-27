@@ -3,6 +3,16 @@ from langchain.indexes import VectorstoreIndexCreator
 from langchain.vectorstores import FAISS
 from langchain.text_splitter import CharacterTextSplitter
 from langchain.document_loaders.csv_loader import CSVLoader
+from st_files_connection import FilesConnection
+#from mylib import BedrockEmbeddings
+import streamlit as st
+
+
+aws_credentials = {
+    "aws_access_key_id": st.secrets["aws"]["access_key_id"],
+    "aws_secret_access_key": st.secrets["aws"]["secret_access_key"],
+    "region_name": st.secrets["aws"]["region"]
+}
 
 
 def get_index(): #creates and returns an in-memory vector store to be used in the application
@@ -10,7 +20,7 @@ def get_index(): #creates and returns an in-memory vector store to be used in th
     embeddings = BedrockEmbeddings() #create a Titan Embeddings client
     
     loader = CSVLoader(file_path="fashion_faqs.csv")
-    
+    conn = st.connection('s3', type=FilesConnection)
     documents = loader.load()
 
     index_creator = VectorstoreIndexCreator(
